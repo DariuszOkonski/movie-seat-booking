@@ -7,6 +7,8 @@ const movieSelect = document.getElementById('movie');
 // + sign will change to int type
 let ticketPrice = +movieSelect.value;
 
+populateUI();
+
 function setMovieData(movieIndex, moviePrice) {
     localStorage.setItem('selectedMovieIndex', movieIndex);
     localStorage.setItem('selectedMoviePrice', moviePrice);
@@ -17,11 +19,26 @@ function updateSelectedCount() {
     
     const seatsIndex = [...selectedSeats].map((seat) => [...seats].indexOf(seat));
     
-    localStorage.setItem('seatsSeats', JSON.stringify(seatsIndex));
+    localStorage.setItem('selectedSeats', JSON.stringify(seatsIndex));
 
     const selectedSeatsCount = selectedSeats.length;
     count.innerText = selectedSeatsCount;
     total.innerText = selectedSeatsCount * ticketPrice;
+}
+
+// get data from localstorage and populate ui
+function populateUI() {
+    const selectedSeats = JSON.parse(localStorage.getItem('selectedSeats'));
+    
+    if(selectedSeats !== null && selectedSeats.length > 0) {
+        seats.forEach((seat, index) => {
+            if(selectedSeats.indexOf(index) > -1) {
+                seat.classList.add('selected');
+            }
+        })
+    }
+
+    
 }
 
 // movie select event
